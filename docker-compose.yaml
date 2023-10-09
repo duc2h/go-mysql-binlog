@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  mysql-master-test:
+    container_name: go-mysql-binlog
+    image: "mysql:latest"
+    volumes:
+      - ./volumes/mysql_data_test:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - MYSQL_DATABASE=test
+      - MYSQL_ROOT_PASSWORD=123456
+    ports:
+      - "3306:3306"
