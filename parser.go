@@ -24,7 +24,6 @@ func (m *BinlogParser) GetBinLogData(element interface{}, e *canal.RowsEvent, n 
 	for k := 0; k < num; k++ {
 		parsedTag := parseTagSetting(t.Field(k).Tag)
 		name := s.Field(k).Type().Name()
-		fmt.Println(parsedTag)
 		if columnName, ok = parsedTag["COLUMN"]; !ok || columnName == "COLUMN" {
 			continue
 		}
@@ -42,7 +41,6 @@ func (m *BinlogParser) GetBinLogData(element interface{}, e *canal.RowsEvent, n 
 		case "float64":
 			s.Field(k).SetFloat(m.floatHelper(e, n, columnName))
 		case "Decimal":
-			fmt.Println("============ name: ", columnName)
 			s.Field(k).Set(reflect.ValueOf(m.decimalHelper(e, n, columnName)))
 		default:
 			if _, ok := parsedTag["FROMJSON"]; ok {
