@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	pos  = 1 // we will store this pos to consume the next position
-	name = "binlog.000002"
+	cursor = 1 // we will store this pos to consume the next position
+	name   = "binlog.000002"
 )
 
 type Order struct {
@@ -66,9 +66,13 @@ func main() {
 	// Register a handler to handle RowsEvent
 	c.SetEventHandler(&MyEventHandler{})
 
+	pos, err := c.GetMasterPos()
+	if err != nil {
+		log.Fatal(err)
+	}
 	// Start canal
 	c.RunFrom(mysql.Position{
-		Pos:  uint32(pos),
-		Name: name,
+		Pos:  uint32(cursor),
+		Name: pos.Name,
 	})
 }
